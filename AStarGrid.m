@@ -15,18 +15,19 @@ function [route,numExpanded] = AStarGrid (input_map, start_coords, dest_coords)
 % set up color map for display
 % 1 - white - clear cell
 % 2 - black - obstacle
-% 3 - red = visited
-% 4 - blue  - on list
+% 3 - grey - visited
+% 4 - yellow - on list
 % 5 - green - start
-% 6 - yellow - destination
-% 7
+% 6 - red - destination
+% 7 - cyan - route
+
 cmap = [1 1 1; ...
     0 0 0; ...
-    1 0 0; ...
-    0 0 1; ...
-    0 1 0; ...
+    0.5 0.5 0.5; ...
     1 1 0; ...
-    0.5 0.5 0.5];
+    0 1 0; ...
+    1 0 0; ...
+    0 1 1];
 
 colormap(cmap);
 
@@ -144,6 +145,41 @@ while true
         end
     end
     %*********************************************************************
+   numExpanded=numExpanded+1;
+   end
+  
+    
+    
+    
+    %*********************************************************************
+    
+    
+
+
+%% Construct route from start to dest by following the parent links
+if (isinf(f(dest_node)))
+    route = [];
+else
+    route = [dest_node];
+    
+    while (parent(route(1)) ~= 0)
+        route = [parent(route(1)), route];
+    end
+
+    % Snippet of code used to visualize the map and the path
+    for k = 2:length(route) - 1        
+        map(route(k)) = 7;
+        pause(0.1);
+        image(1.5, 1.5, map);
+        grid on;
+        axis image;
+    end
+end
+
+end
+% [X,Y]=meshgrid(0:n);
+% line(X,Y,'Color',[0.5,0.5,0.5],'LineStyle','-')
+% line(Y,X,'Color',[0.5,0.5,0.5],'LineStyle','-')*****************************
    numExpanded=numExpanded+1;
    end
   
