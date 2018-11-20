@@ -39,8 +39,8 @@ drawMapEveryTime = true;
 % map - a table that keeps track of the state of each grid cell
 map = zeros(nrows,ncols);
 
-map(~input_map) = 1;   % Mark free cells
-map(input_map)  = 2;   % Mark obstacle cells
+map(input_map==0) = 1;   % Mark free cells
+map(input_map==1)  = 2;   % Mark obstacle cells
 
 % Generate linear indices of start and dest nodes
 start_node = sub2ind(size(map), start_coords(1), start_coords(2));
@@ -55,7 +55,7 @@ map(dest_node)  = 6;
 parent = zeros(nrows,ncols);
 
 % 
-[X, Y] = meshgrid (1:ncols, 1:nrows)
+[X, Y] = meshgrid (1:ncols, 1:nrows);
 
 xd = dest_coords(1);
 yd = dest_coords(2);
@@ -73,10 +73,10 @@ f(start_node) = H(start_node);
 
 % keep track of the number of nodes that are expanded
 numExpanded = 0;
-u=0
-d=0
-l=0
-r=0
+u=0;
+d=0;
+l=0;
+r=0;
 % Main Loop
 
 while true
@@ -99,7 +99,7 @@ while true
     
     if ((current == dest_node) || isinf(min_f))
         break;
-    end;
+    end
     
     % Update input_map
     map(current) = 3;
@@ -116,35 +116,35 @@ while true
     if (((j<= nrows) && (j>= 0)) && ((i<= ncols) && (i>=0)))
          
        if (j+1) <= nrows  
-       r = sub2ind(size(map), i, j+1)
+       r = sub2ind(size(map), i, j+1);
        end
        if (j-1) >= 1
-       l = sub2ind(size(map), i, j-1)
+       l = sub2ind(size(map), i, j-1);
        end
        if (i+1) <= ncols
-       d = sub2ind(size(map), i+1, j)
+       d = sub2ind(size(map), i+1, j);
        end
        if (i-1) >=1 
-       u = sub2ind(size(map), i-1, j)
+       u = sub2ind(size(map), i-1, j);
        end
     
-    adjacent = [u d r l]
-   for nums=1:4
-          a=adjacent(nums)
-      if a~=0
-       if (map(a)== 1 || map(a)== 4 || map(a)== 6)
-          if g(a)> g(current)+ 1
-              g(a)=g(current) + 1
-              f(a)=g(a)+ H(a)
-              
-             parent(a) = current;
-             map(a) = 4;
-       end
+    adjacent = [u d r l];
+    for nums=1:4
+        a=adjacent(nums);
+        if a~=0
+            if (map(a)== 1 || map(a)== 4 || map(a)== 6)
+                if g(a)> g(current)+ 1
+                    g(a)=g(current) + 1;
+                    f(a)=g(a)+ H(a);
+               
+                    parent(a) = current;
+                    map(a) = 4;
+                end
+            end
+        end
     end
-   end
-   end
     %*********************************************************************
-   numExpanded=numExpanded+1
+   numExpanded=numExpanded+1;
    end
   
     
