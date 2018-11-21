@@ -50,13 +50,13 @@ dest_node  = sub2ind(size(map), dest_coords(1),  dest_coords(2));
 map(start_node) = 5;
 map(dest_node)  = 6;
 
-% meshgrid will `replicate grid vectors' nrows and ncols to produce
+% meshgrid will 'replicate grid vectors' nrows and ncols to produce
 % a full grid
-% type `help meshgrid' in the Matlab command prompt for more information
+% type 'help meshgrid' in the Matlab command prompt for more information
 parent = zeros(nrows,ncols);
 
 % 
-[X, Y] = meshgrid (1:ncols, 1:nrows);
+[Y, X] = meshgrid (1:ncols, 1:nrows);
 
 xd = dest_coords(1);
 yd = dest_coords(2);
@@ -64,7 +64,6 @@ yd = dest_coords(2);
 % Evaluate Heuristic function, H, for each grid cell
 % Manhattan distance
 H = abs(X - xd) + abs(Y - yd);
-H = H';
 % Initialize cost arrays
 f = Inf(nrows,ncols);
 g = Inf(nrows,ncols);
@@ -79,9 +78,7 @@ d=0;
 l=0;
 r=0;
 % Main Loop
-
 while true
-    
     % Draw current map
     map(start_node) = 5;
     map(dest_node) = 6;
@@ -114,7 +111,7 @@ while true
     % Visit all of the neighbors around the current node and update the
     % entries in the map, f, g and parent arrays
     %
-    if (((j<= nrows) && (j>= 0)) && ((i<= ncols) && (i>=0)))
+%     if (((j<= nrows) && (j>= 0)) && ((i<= ncols) && (i>=0)))
          
        if (j+1) <= nrows  
        r = sub2ind(size(map), i, j+1);
@@ -146,7 +143,7 @@ while true
     end
     %*********************************************************************
    numExpanded=numExpanded+1;
-   end
+end
   
     
     
@@ -160,42 +157,7 @@ while true
 if (isinf(f(dest_node)))
     route = [];
 else
-    route = [dest_node];
-    
-    while (parent(route(1)) ~= 0)
-        route = [parent(route(1)), route];
-    end
-
-    % Snippet of code used to visualize the map and the path
-    for k = 2:length(route) - 1        
-        map(route(k)) = 7;
-        pause(0.1);
-        image(1.5, 1.5, map);
-        grid on;
-        axis image;
-    end
-end
-
-end
-% [X,Y]=meshgrid(0:n);
-% line(X,Y,'Color',[0.5,0.5,0.5],'LineStyle','-')
-% line(Y,X,'Color',[0.5,0.5,0.5],'LineStyle','-')*****************************
-   numExpanded=numExpanded+1;
-   end
-  
-    
-    
-    
-    %*********************************************************************
-    
-    
-
-
-%% Construct route from start to dest by following the parent links
-if (isinf(f(dest_node)))
-    route = [];
-else
-    route = [dest_node];
+    route = dest_node;
     
     while (parent(route(1)) ~= 0)
         route = [parent(route(1)), route];
