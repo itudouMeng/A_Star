@@ -65,21 +65,6 @@ parent = zeros(nrows,ncols);
 % Manhattan distance
 H = abs(X - xd) + abs(Y - yd);
 
-%*************************A* algorithm improvement 1**********************%
-% p=0.001;
-% H=(1+p)*H;
-%*************************************************************************%
-
-%*************************A* algorithm improvement 2**********************%
-dx1=X-xd;
-dy1=Y-yd;
-dx2=xs-xd;
-dy2=ys-yd;
-cross=abs(dx1*dy2-dx2*dy1);
-p=0.001;
-H=H+cross*p;
-%*************************************************************************%
-
 % Initialize cost arrays
 f = Inf(nrows,ncols);
 g = Inf(nrows,ncols);
